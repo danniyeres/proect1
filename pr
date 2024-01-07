@@ -1,0 +1,164 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class pr{
+    static ArrayList<String> studentsname = new ArrayList<>();
+    static ArrayList<Integer> studentsid = new ArrayList<>();
+    static ArrayList<Double> studentsscore = new ArrayList<>();
+
+    public static void main(String[] args) {
+
+
+        Scanner s = new Scanner(System.in);
+        System.out.print("Enter a username: ");
+        String username = s.nextLine();
+        System.out.print("Enter a password: ");
+        String password = s.nextLine();
+        if (username.equals("1") && password.equals("1")) {
+            while (true) {
+                System.out.println("Main menu\n" + "1. Add Student\n" + "2. Manage Records\n" + "3. Calculate Grades\n" + "4. View Statistics\n" + "5. Generate Reports\n" + "6. Delete Student\n" + "7. Logout and exit");
+                System.out.print("Enter your choice: ");
+                int menu = s.nextInt();
+                switch (menu) {
+                    case 1:
+                        AddStudent(s, studentsname, studentsid, studentsscore);
+                        break;
+                    case 2:
+                        System.out.print("Enter student ID to edit: ");
+                        int idedit = s.nextInt();
+                        ManageRecords(idedit, s, studentsid, studentsscore);
+                        break;
+                    case 3:
+                        CalculateGrades();
+                        break;
+                    case 4:
+                        System.out.println("Statistics:");
+                        ViewStatistics(studentsid, studentsscore);
+                        break;
+                    case 5:
+                        System.out.print("Enter student ID to generate a report: ");
+                        int gr = s.nextInt();
+                        GenerateReports(gr, studentsname, studentsid, studentsscore);
+                        break;
+                    case 6:
+                        System.out.print("Enter student ID to delete: ");
+                        int delite = s.nextInt();
+                        DeleteStudent(delite, studentsname, studentsid, studentsscore);
+                        break;
+                    case 7:
+                        break;
+                    default:
+                        System.out.println("error");
+                }
+                if (menu==7){
+                    break;
+                }
+            }
+        } else{
+            System.out.println("Invalid username or password.");
+        }
+    }
+
+    public static void AddStudent(Scanner s, ArrayList<String> studentsname, ArrayList<Integer> studentsid, ArrayList<Double> studentsscore) {
+        System.out.print("Enter student name: ");
+        String sn = s.next();
+        System.out.print("Enter student ID: ");
+        int id = s.nextInt();
+        System.out.print("Enter student score: ");
+        double sc = s.nextDouble();
+        System.out.println("Student added successfully.");
+        studentsname.add(sn);
+        studentsid.add(id);
+        studentsscore.add(sc);
+    }
+    public static void ManageRecords(int idedit, Scanner s,  ArrayList<Integer> studentsid, ArrayList<Double> studentsscore) {
+        int t = 0;
+        int count = 0;
+        for (int i = 0; i < studentsid.size(); i++) {
+            if (studentsid.get(i) == idedit) {
+                t = i;
+                count++;
+            }
+        }
+        if (count == 0) {
+            System.out.println("No such ID.");
+        } else {
+            System.out.print("Enter new test score: ");
+            double scoreedit = s.nextDouble();
+
+
+            for (int i = 0; i < studentsid.size(); i++) {
+                if (studentsid.get(i) == idedit) {
+                    t = i;
+                }
+            }
+            studentsscore.set(t, scoreedit);
+        }
+    }
+    public static void CalculateGrades() {
+        System.out.println("Grades calculated.\n" + "Grade Details added");
+    }
+    public static void ViewStatistics(ArrayList<Integer> studentsid, ArrayList<Double> studentsscore) {
+        int sum = 0;
+        int total = studentsid.size();
+        System.out.println("Total Students: " + total);
+
+        for (double score : studentsscore) {
+            sum += score;
+        }
+        double Average = sum / studentsscore.size();
+
+        System.out.println("Average score: " + Average);
+
+        double highest = studentsscore.get(0);
+        for (int i = 1; i < studentsscore.size(); i++) {
+            if (studentsscore.get(i) > highest) {
+                highest = studentsscore.get(i);
+            }
+        }
+        System.out.println("Highest score: " + highest);
+
+        double lowest = studentsscore.get(0);
+        for (int i = 1; i < studentsscore.size(); i++) {
+            if (studentsscore.get(i) < lowest) {
+                lowest = studentsscore.get(i);
+            }
+        }
+        System.out.println("Lowest score: " + lowest);
+
+    }
+    public static void GenerateReports(int gr, ArrayList<String> studentsname, ArrayList<Integer> studentsid, ArrayList<Double> studentsscore) {
+        for (int i = 0; i < studentsid.size(); i++) {
+            if (studentsid.get(i) == gr) {
+
+                System.out.println("Generating report for student with ID: "+studentsid.get(i));
+                System.out.println("Student Report");
+                System.out.println("Name: " + studentsname.get(i));
+                System.out.println("Student ID: "+studentsid.get(i));
+                System.out.println("Test Score: " + studentsscore.get(i));
+                if (studentsscore.get(i)>=90 && studentsscore.get(i)<=100){
+                    System.out.println("Final Grade: A");
+                } else if (studentsscore.get(i)>=80 && studentsscore.get(i)<=89) {
+                    System.out.println("Final Grade: B");
+                } else if (studentsscore.get(i)>=70 && studentsscore.get(i)<=79) {
+                    System.out.println("Final Grade: C");
+                } else if (studentsscore.get(i)>=60 && studentsscore.get(i)<=69) {
+                    System.out.println("Final Grade: D");
+                } else if (studentsscore.get(i)>=0 && studentsscore.get(i)<=59) {
+                    System.out.println("Final Grade: F");
+                }
+
+            }
+        }
+    }
+    public static void DeleteStudent(int delite,  ArrayList<String> studentsname, ArrayList<Integer> studentsid, ArrayList<Double> studentsscore) {
+        for (int i = 0; i < studentsid.size(); i++) {
+            if (studentsid.get(i) == delite) {
+                studentsid.remove(i);
+                studentsname.remove(i);
+                studentsscore.remove(i);
+            }
+            System.out.println("Student deleted successfully.");
+        }
+    }
+}
